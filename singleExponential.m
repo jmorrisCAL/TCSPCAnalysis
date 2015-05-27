@@ -18,5 +18,4 @@ function model = singleExponential(params, times)
   a = params(1);
   tau = params(2);
   model = a.*exp(-times./tau);
-  model = model/sum(model); %normalized!
 end

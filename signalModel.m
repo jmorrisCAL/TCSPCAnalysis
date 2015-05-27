@@ -20,14 +20,14 @@ function signal = signalModel(params, times, irf)
 %     comparision to signal data.
 %   irf: a vector cotaining the IRF data of the same length as times.  Should
 %     normalized such that sum(irf) = 1.0.
+%   samplingFreq: a double defining the sampling spaceing, eg, time of a bin.
 %   
 %   Returns:
 %   signal: the predicted signal for comparison to the measured signal and
 %     optimization via lsqcurvefit(...), normalized such that 
 %       sum(signal) = 1.0.
-
-  model = singleExponential(params(1:2),times)
-  model = model + singleExponential(params(3:4),times);
+  model = params(1).*exp(-times./params(2)) + params(3).*exp(-times./params(4));
+  model = model / sum(model);
   signalFFT = (fft(model)).*(fft(irf));
   signal = ifft(signalFFT);
 end
