@@ -1,11 +1,7 @@
 %% define data lenghts
 n = 4096;
 irfTime = 200;
-
-gridpoints = 2;
-
-t = linspace(0, n, n);
-
+t = linspace(0, 7000, n);
 irf = normpdf(t, irfTime, 50);
 irf = irf/sum(irf);
 
@@ -33,13 +29,24 @@ scatter(t, signal);
 
 %% brute-force: hulk is angry...! hulk smasssshhhh!
 % suppress a bunch of diagnostics
-gridpoints = [4 4 4 4]
+gridpoints = [4 4 4 4];
+lowerBound = [100, 1500, 100, 250];
+upperBound = [1000 4096 1000 4096];
 func = @(params, times)signalModel(params, times, irf);
-[opt, resNorm, res] = fourParamFit(func, t, signal, [100, 1500, 100, 250], [1000 4096 1000 4096], [4 4 4 4])
+[opt, resNorm, res] = fourParamFit(func, ...
+                                   t, ...
+                                   signal, ...
+                                   lowerBound, ...
+                                   upperBound, ...
+                                   gridpoints)
 
+% plot fit vs signal
 figure;
 scatter(t, signal);
 hold on;
 plot(t, signalModel(opt, t, irf));
+
+
+%plot residuals
 figure;
-scatter(t,r(:,iMin,jMin,kMin,lMin));
+scatter(t,res);
