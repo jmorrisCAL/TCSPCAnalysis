@@ -27,7 +27,9 @@ function signal = signalModel(params, times, irf)
 %     optimization via lsqcurvefit(...), normalized such that 
 %       sum(signal) = 1.0.
   model = params(1).*exp(-times./params(2)) + params(3).*exp(-times./params(4));
-  model = model / sum(model);
+  norm = sum(model);
+  model = model / norm;
   signalFFT = (fft(model)).*(fft(irf));
   signal = ifft(signalFFT);
+  signal = signal * norm;
 end
