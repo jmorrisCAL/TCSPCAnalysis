@@ -12,6 +12,7 @@ tau_s = 500;
 params = [A_l tau_l A_s tau_s];
 
 signal = signalModel(params, t, irf);
+signal = poissrnd(signal);
 
 figure;
 plot(t, irf);
@@ -19,7 +20,7 @@ hold on;
 scatter(t, signal);
 
 %% fit long lifetime
-[p_l, s_l] = polyfit(t(n-long:n),log(signal(n-long:n)),1);
+%[p_l, s_l] = polyfit(t(n-long:n),log(signal(n-long:n)),1);
 %param_l0(1) = exp(p_l(2));
 %param_l0(2) = -1.0/p_l(1);
 %figure;

@@ -26,7 +26,8 @@ function signal = signalModel(params, times, irf)
 %   signal: the predicted signal for comparison to the measured signal and
 %     optimization via lsqcurvefit(...), normalized such that 
 %       sum(signal) = 1.0.
-  model = params(1).*exp(-times./params(2)) + params(3).*exp(-times./params(4));
+  model = params(1).*exp(-times./params(2)) + ...
+          params(3).*exp(-times./params(4));
   norm = sum(model);
   model = model / norm;
   signalFFT = (fft(model)).*(fft(irf));
